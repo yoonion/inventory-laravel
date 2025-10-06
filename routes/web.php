@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -9,6 +10,7 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('/product/input', [ProductController::class, 'input'])->name('product.input');
 });
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
