@@ -3,8 +3,10 @@
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('auth')->group(function () {
+    Route::get('/', function () {
+        return view('dashboard', ['title' => '대시보드']);
+    })->name('dashboard');
 });
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
