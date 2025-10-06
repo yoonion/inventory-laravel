@@ -43,4 +43,13 @@ class LoginController extends Controller
             ->withInput()
             ->with('error', 'AUTH FAIL');
     }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/login')
+            ->with('status', '로그아웃 되었습니다.');
+    }
 }
