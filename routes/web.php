@@ -12,6 +12,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/product/input', [ProductController::class, 'input'])->name('product.input');
     Route::post('/product/input', [ProductController::class, 'store'])->name('product.store');
+    Route::get('/product', [ProductController::class, 'index'])->name('product');
 });
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
