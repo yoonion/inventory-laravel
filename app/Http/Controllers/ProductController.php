@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -60,5 +61,18 @@ class ProductController extends Controller
         Product::create($arr);
 
         return redirect()->route('dashboard')->with('success', '상품 등록이 성공하였습니다.');
+    }
+
+    public function destroy($id)
+    {
+        $product = Product::findOrFail($id);
+
+        // 이미지가 존재하면 삭제
+        if (!empty($product->image)) {
+            Storage::disk('public')->delete($product->image);
+        }
+        $product->delete(); // row 삭제
+
+        return redirect()->route('product')->with('success', '상품이 삭제되었습니다.');
     }
 }

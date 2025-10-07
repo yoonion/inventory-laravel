@@ -7,6 +7,10 @@
             <a href="product_form.php" class="btn btn-primary">+ 상품 추가</a>
         </div>
 
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
         <form class="row g-3 mb-3" method="get">
             <div class="col-md-4">
                 <input type="text" name="search" class="form-control" placeholder="상품명 또는 SKU 검색" value="">
@@ -52,8 +56,7 @@
                         <td>
                             <div class="btn-group btn-group-sm" role="group">
                                 <a href="" class="btn btn-outline-primary">수정</a>
-                                <a href="" class="btn btn-outline-danger"
-                                   onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
+                                <a href="#" class="btn btn-outline-danger btn-del" data-id="{{ $product->id }}">삭제</a>
                                 <a href="" class="btn btn-outline-success">입고</a>
                                 <a href="" class="btn btn-outline-warning">출고</a>
                             </div>
@@ -63,25 +66,28 @@
                 </tbody>
             </table>
         </div>
-
-        <nav class="mt-4">
-            <ul class="pagination justify-content-center">
-
-                <li class="page-item">
-                    <a class="page-link" href="">1</a>
-                </li>
-                <li class="page-item active">
-                    <a class="page-link" href="">2</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="">3</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="">4</a>
-                </li>
-
-            </ul>
-        </nav>
+        {{ $products->links() }}
     </div>
-    </div>
+
+    {{-- 공용 삭제 폼 --}}
+    <form id="deleteForm" method="post" style="display: none">
+        @csrf
+        @method('DELETE')
+    </form>
+
+
+    <script>
+        const btn_dels = document.querySelectorAll('.btn-del');
+        btn_dels.forEach((element) => {
+            element.addEventListener('click', function (e) {
+                if (!confirm('정말 삭제 하시겠습니까?')) {
+                    return false;
+                }
+
+                const form = document.getElementById('deleteForm');
+                form.action = '/product/' + this.dataset.id;
+                form.submit();
+            });
+        });
+    </script>
 @endsection
